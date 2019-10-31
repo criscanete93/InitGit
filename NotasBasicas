@@ -1,0 +1,38 @@
+"PXL201701952" programasdowncargas.blogspot.com
+height = 867
+width = 264
+Trinidad.Galvan
+Praxis19kZ
+Issuance
+3B09DFC686E4	
+-- 328 _total
+4894368750259
+<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="LostKeyboardFocus">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}, AncestorLevel=2}, Path=DataContext.ChangeAmountCollection}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+127 66200 11566 18242
+
+
+        public string TicketDiscountsAmountPercentageString => $"{"("}{"%"} {CurrencyManagementViewModel.Instance.ConvertNumberToString(TicketDiscountsAmountPercentage)}{")"}";
+		
+		  private decimal _ticketDiscountsAmountPercentage;
+        public decimal TicketDiscountsAmountPercentage
+        {
+            get 
+            {
+                _ticketDiscountsAmountPercentage = (Math.Abs(_ticketDiscountsAmount) * 100 ) / (_ticketSubTotal + TicketTaxesAmount);
+                return _ticketDiscountsAmountPercentage;
+            }
+            set
+            {
+               if (_ticketDiscountsAmountPercentage == value)
+                    return;
+                _ticketDiscountsAmountPercentage = value;
+                OnPropertyChanged(nameof(TicketDiscountsAmountPercentage));
+            }
+        }
+
+        

@@ -1,0 +1,155 @@
+
+            ////GeneralViewModel.Instance.SetInitData(identityData, initData.FacilityDTO.FacilityID, authentication);
+            //SetFacilityData(initData);
+            //SetCatalogs(initData);
+            ////TerminalViewModel.Instance.SetInitData(initData.CountersAssigmentDTO, initData.Store.StoreID);
+            //AttendanceHelper.InitAttendanceSignalR(initData.FacilityDTO.FacilityID);
+            //InitMessagingSignalR(initData.FacilityDTO.FacilityID, initData.FacilityDTO.FranchiseID);
+            //InitTurnSignalR(TerminalViewModel.Instance.ArrivalPointID);
+            //ShowEntryAndExit(ticketFolio);
+            //UpdateApp(initData.FacilityDTO.FacilityID);
+						  
+						  
+		
+		private void SetFacilityData(MigrationDesktopLoginDTO initData)
+        {
+            FacilityViewModel.Instance.SetInitData(initData.FacilityDTO, initData.SeasonDTO);
+            TimeProviderHelper.SetTimeProviderFacility(initData.FacilityDTO.FacilityID);
+        }
+
+        private void SetCatalogs(MigrationDesktopLoginDTO initData)
+        {
+            EntryAndExitGeneralViewModel.Instance.ArrivalPointID = initData.CountersAssigmentDTO.ArrivalPointID;
+            EntryAndExitGeneralViewModel.Instance.VisitorTypes = initData.VisitorTypes.Select(x => new VisitorTypeModel { VisitorTypeID = x.VisitorTypeID, VisitorCategoryID = x.VisitorCategoryID, VisitTypeDescription = x.VisitorTypeDescription, MinimumAge = x.MinimumAge, MaximumAge = x.MaximumAge, IsShowedAge = x.IsShowedAge, LanguageCode = x.LanguageCode }).ToList();
+            EntryAndExitGeneralViewModel.Instance.Genders = initData.Genders.Select(x => new GenderModel { GenderDescription = x.GenderDescription, GenderID = x.GenderID }).ToList();
+            EntryAndExitGeneralViewModel.Instance.GroupTypes = initData.GroupTypes.Select(x => new GroupTypeModel { GroupTypeID = x.GroupTypeID, GroupTypeDescription = x.GroupTypeDescription, GroupTypeCode = x.GroupTypeCode }).ToList();
+            EntryAndExitGeneralViewModel.Instance.RentalInventory = initData.ProductRentals.Select(x => new ServiceProductModel { ProductID = x.ProductID, ProductRentalID = x.ProductRentalID, ProductRentalName = x.ProductRentalName, ProductRentalIdentifier = x.ProductRentalIdentifier, IsAssigned = false }).ToList();
+            EntryAndExitGeneralViewModel.Instance.SetDataTurns(initData.SlotCapacityFacilities);
+        }
+		
+	    private static Bitmap WriteHeaderTicket(Graphics graphics, TicketTypeOperation ticketType, Bitmap img)
+        {
+          
+            graphics = Graphics.FromImage(img);
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+            switch (ticketType)
+            {
+                case TicketTypeOperation.Default:
+                    break;
+                case TicketTypeOperation.Cancelled:
+                    graphics.DrawString("Cancelled Copy", new Font("Tahoma", 11, FontStyle.Bold), Brushes.Black, 88, 0);
+                    break;
+                case TicketTypeOperation.Refund:
+                    graphics.DrawString("Refund Copy",  new Font("Tahoma", 11, FontStyle.Bold), Brushes.Black, 88, 0);
+                    break;
+                case TicketTypeOperation.Reprint:
+                    graphics.DrawString("Reprint Copy", new Font("Tahoma", 11, FontStyle.Bold), Brushes.Black, 88, 0);
+                    break;
+                case TicketTypeOperation.Change:
+                    graphics.DrawString("Change Copy",  new Font("Tahoma", 11, FontStyle.Bold), Brushes.Black, 88, 0);
+                    break;
+            }
+            graphics.Flush();
+            return img;
+        }
+		
+		
+		 public abstract class WatermarkDrawingBase
+    {
+        private const int DefaultAlpha = 120;
+
+        protected Font _font;
+        protected Font _fontWatermark;
+        protected SolidBrush _brush;
+
+        public abstract Bitmap Draw(Bitmap image, string watermarkText);
+
+        public WatermarkDrawingBase()
+        {
+            _font = DrawingHelper.GetDefaultFont();
+            _brush = DrawingHelper.GetOpacityBrush(Color.Black, DefaultAlpha);
+            _fontWatermark = DrawingHelper.GetWatermarkFontSize();
+        }
+    }
+	
+	public class Data
+	{
+	 public const int RegularFontSize = 10;
+        public const int WatermarkFontSize = 14;
+        public const string FontName = "Arial";
+
+        public static Font GetDefaultFont()
+            => new Font(FontName, RegularFontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+
+        public static SolidBrush GetDefaultBrush()
+            => new SolidBrush(Color.Black);
+
+        public static SolidBrush GetOpacityBrush(Color color, int alpha)
+            => new SolidBrush(Color.FromArgb(alpha, color));
+
+        public static Font GetWatermarkFontSize()
+           => new Font(FontName, WatermarkFontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+		   
+		      draftsman.DrawString(pattern, _fontWatermark, _brush, layout);
+	}
+	
+	 private void ShowCashIssuance(object parameter)
+        {
+            if (!CanExecute())
+                return;
+            var window = new MultiWindow
+            {
+                Layout = new FloatAssigmentControl { DataContext = new CashFloatAssignmentViewModel() }
+            };
+            window.Owner = WindowsOperationsHelper.GetAplicationMainWindow();
+            window.ShowDialog();
+            //var url = (string)parameter;            
+            //ShowEmbeddedAction($"{GeneralViewModel.Instance.Host}{url}?LocationType=1&Location={StoreViewModel.Instance.StoreID}&SeasonType={FacilityViewModel.Instance.FacilityOperationHours.SeasonTypeID}&IsPos=1&FacilityID={FacilityViewModel.Instance.FacilityID}", null);
+        }
+		
+		   public static readonly DependencyProperty IsSendingControl =
+                               DependencyProperty.Register("IsSending", typeof(bool), typeof(CredentialControl), new PropertyMetadata(false));
+        public bool IsSending
+        {
+            get => (bool)GetValue(IsSendingControl);
+            set
+            {
+                SetValue(IsSendingControl, value);
+            }
+        }
+		
+		} private bool _isIssuances;
+        public bool IsIssuances
+        {
+            get => _isIssuances;
+            set
+            {
+                if (_isIssuances == value)
+                    return;
+                _isIssuances = value;
+                OnPropertyChanged(nameof(IsIssuances));
+            }
+        }
+		
+		     private string _descriptionDiscounts;
+        public string DescriptionDiscounts
+        {
+            get => _descriptionDiscounts;
+            set
+            {
+                if (_descriptionDiscounts == value)
+                    return;
+                _descriptionDiscounts = value;
+                OnPropertyChanged(nameof(DescriptionDiscounts));
+            }
+        }
+
+		
+		<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="LostKeyboardFocus">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}, AncestorLevel=2}, Path=DataContext.ChangeAmountCollection}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
